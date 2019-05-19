@@ -53,7 +53,7 @@ def get_qad_triples(data):
     return qad_triples
 
 
-def convert_to_squad_format(qa_json_file, squad_file):
+def convert_to_squad_format(qa_json_file, squad_file, lower=True):
     qa_json = utils.dataset_utils.read_triviaqa_data(qa_json_file)
     qad_triples = get_qad_triples(qa_json)
 
@@ -75,6 +75,8 @@ def convert_to_squad_format(qa_json_file, squad_file):
         qa['qid'] = qid
 
         ans_string, index = utils.dataset_utils.answer_index_in_document(qad['Answer'], selected_text)
+        if lower:
+            ans_string = ans_string.lower()
         qa['is_impossible'] = True
         if index == -1:
             if qa_json['Split'] == 'train':
@@ -104,6 +106,7 @@ def get_args():
     parser.add_argument('--max_num_tokens', default=800, type=int, help='Maximum number of tokens from a document')
     parser.add_argument('--sample_size', default=80000, type=int, help='Random seed')
     parser.add_argument('--tokenizer', default='tokenizers/punkt/english.pickle', help='Sentence tokenizer')
+    parser.add_argument('--lower', default=True, help='do lowercase')
     args = parser.parse_args()
     return args
 
@@ -111,4 +114,4 @@ def get_args():
 if __name__ == '__main__':
     args = get_args()
     sent_tokenize = nltk.data.load(args.tokenizer)
-    convert_to_squad_format(args.triviaqa_file, args.squad_file)
+    convert_to_squad_format(args.triviaqa_file, args.squad_file, lower=args.lower)

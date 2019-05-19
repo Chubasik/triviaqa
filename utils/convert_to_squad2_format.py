@@ -73,7 +73,6 @@ def convert_to_squad_format(qa_json_file, squad_file):
         qa = para['qas'][0]
         qa['id'] = utils.dataset_utils.get_question_doc_string(qid, qad['Filename'])
         qa['qid'] = qid
-        qa['is_impossible'] = False
 
         ans_string, index = utils.dataset_utils.answer_index_in_document(qad['Answer'], selected_text)
         if index == -1:
@@ -81,6 +80,8 @@ def convert_to_squad_format(qa_json_file, squad_file):
                 continue
         else:
             qa['answers'].append({'text': ans_string, 'answer_start': index})
+
+        qa['is_impossible'] = len(qa['answers']) == 0
 
         if qa_json['Split'] == 'train' and len(data) >= args.sample_size and qa_json['Domain'] == 'Web':
             break

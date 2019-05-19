@@ -75,6 +75,7 @@ def convert_to_squad_format(qa_json_file, squad_file):
         qa['qid'] = qid
 
         ans_string, index = utils.dataset_utils.answer_index_in_document(qad['Answer'], selected_text)
+        qa['is_impossible'] = ans_string == ''
         if index == -1:
             if qa_json['Split'] == 'train':
                 continue

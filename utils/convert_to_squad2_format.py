@@ -68,11 +68,12 @@ def convert_to_squad_format(qa_json_file, squad_file):
         selected_text = select_relevant_portion(text)
 
         question = qad['Question']
-        para = {'context': selected_text, 'qas': [{'question': question, 'answers': []}], 'is_impossible': 'false'}
+        para = {'context': selected_text, 'qas': [{'question': question, 'answers': []}]}
         data.append({'paragraphs': [para]})
         qa = para['qas'][0]
         qa['id'] = utils.dataset_utils.get_question_doc_string(qid, qad['Filename'])
         qa['qid'] = qid
+        qa['is_impossible'] = False
 
         ans_string, index = utils.dataset_utils.answer_index_in_document(qad['Answer'], selected_text)
         if index == -1:

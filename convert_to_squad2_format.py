@@ -61,7 +61,9 @@ def convert_to_squad_format(qa_json_file, squad_file, lower=True):
     random.shuffle(qad_triples)
 
     data = []
-    for qad in tqdm(qad_triples):
+    for qad_index, qad in enumerate(qad_triples):
+        if qad_index % 5000:
+            print('{}/{}'.format(qad_index, len(qad_triples)))
         qid = qad['QuestionId']
 
         text = get_text(qad, qad['Source'])

@@ -62,7 +62,7 @@ def convert_to_squad_format(qa_json_file, squad_file, lower=True):
 
     data = []
     for qad_index, qad in enumerate(qad_triples):
-        if qad_index % 5000:
+        if qad_index % 5000 == 0:
             print('{}/{}'.format(qad_index, len(qad_triples)))
         qid = qad['QuestionId']
 
